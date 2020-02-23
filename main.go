@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"math/rand"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 
@@ -39,22 +41,57 @@ func getAnimals(w http.ResponseWriter, r *http.Request) {
 
 // Fetch Single Animal
 func getAnimal(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r) // Get the Params
+	// Loop through all entries and find the ocurrence
+	for _, item := range animals {
+		if item.ID == params["id"] {
+			json.NewEncoder(w).Encode(item)
+			return
+		}
+	}
+	json.NewEncoder(w).Encode(&Animal{})
 }
 
 // Create a New Animal
 func createAnimal(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	var animal Animal
+	_ = json.NewDecoder(r.Body).Decode(&animal)
+	animal.ID = strconv.Itoa(rand.Intn(10000000)) // This is an not Hashed ID, only for testing purpose - This is not Safe for production!
+	animals = append(animals, animal)
+	json.NewEncoder(w).Encode(animal)
 }
 
 // Update a Single Animal
 func updateAnimal(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for index, item := range animals {
+		if item.ID == params["id"] {
+			animals = append(animals[:index], animals[index+1:]...)
+			var animal Animal
+			_ = json.NewDecoder(r.Body).Decode(&animal)
+			animal.ID = params["id"]
+			animals = append(animals, animal)
+			json.NewEncoder(w).Encode(animal)
+			return
+		}
+	}
+	json.NewEncoder(w).Encode(animals)
 }
 
 // Delete Animal
 func deleteAnimal(w http.ResponseWriter, r *http.Request) {
-
+	w.Header().Set("Content-Type", "application/json")
+	params := mux.Vars(r)
+	for index, item := range animals {
+		if item.ID == params["id"] {
+			animals = append(animals[:index], animals[index+1:]...)
+			break
+		}
+	}
+	json.NewEncoder(w).Encode(animals)
 }
 
 func main() {
