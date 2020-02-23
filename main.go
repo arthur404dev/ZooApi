@@ -62,5 +62,5 @@ func main() {
 	router.HandleFunc("/api/animals/{id}", deleteAnimal).Methods("DELETE")
 
 	// Run the Server
-	log.Fatal(http.ListenAndServe(":6000", router))
+	log.Fatal(http.ListenAndServe(":8000", router))
 }
