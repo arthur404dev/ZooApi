@@ -1,4 +1,4 @@
-# Zoo Keeper API
+# Zoo Keeper API [![Go Report Card](https://goreportcard.com/badge/github.com/arthurdiegoo/ZooApi)](https://goreportcard.com/report/github.com/arthurdiegoo/ZooApi)
 ![Zoo Keeper Logo](img/../assets/img/ZooApi-Logo.png)
 
 >This Project is a really simple boilerplate for GOlang beginners, aimed to help you create a really basic API with scalability. Use it to fit your own needs. The only package utilized for this was Mux.
